@@ -1,0 +1,8 @@
+springBoot {
+	mainClass = 'com.naverlabs.chatbot.ApiApplication'
+}
+
+dependencies {
+    compile project(':domain')
+    compile('org.springframework.boot:spring-boot-starter-web')
+}

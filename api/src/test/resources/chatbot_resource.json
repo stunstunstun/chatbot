@@ -1,0 +1,1 @@
+{"id": 1, "name": "Bitcoin Bot", "webhookUrl": "http://localhost:8080/chatbot/bots/1/webhook", "enabled": true}

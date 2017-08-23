@@ -1,0 +1,42 @@
+buildscript {
+	ext {
+		gradleVersion = '4.0'
+		springBootVersion = '1.5.3.RELEASE'
+	}
+
+	repositories {
+        jcenter()
+    }
+    
+    dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+def vJavaLang = '1.8'
+def javaProject = [project(':domain'), project(':api')]
+def webProject = [project(':api')]
+
+configure(javaProject) {
+	apply plugin: 'java'
+	apply plugin: 'org.springframework.boot'
+    
+    sourceCompatibility = vJavaLang
+	targetCompatibility = vJavaLang
+
+	repositories {
+		jcenter()
+	}
+
+	dependencies {
+		testCompile ('org.springframework.boot:spring-boot-starter-test')
+	}
+}
+
+configure(webProject) {
+	apply plugin: 'war'
+}
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '3.5'
+}
