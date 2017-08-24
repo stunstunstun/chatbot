@@ -9,19 +9,20 @@
 - JDK 8 (Required)
 - 빌드 도구는 Gradle(Optional)을 사용하지만 Gradle Wrapper를 통해 운영체제에 별도로 설치하지 않아도 테스트 및 실행이 가능합니다.
 
+#### Download & Run
+
+```
+$ git clone https://github.com/stunstunstun/chatbot.git
+$ cd chatbot
+$ ./gradlew bootRun
+```
+> 애플리케이션은 Embeded Tomcat를 통해 서버 프로세스를 생성하며 서버의 포트는 `8080` 입니다. 
+
 #### Test
 
 ```
 $ ./gradlew test
 ```
-
-#### Run
-
-```
-$ ./gradlew bootRun
-```
-
-> 애플리케이션은 Embeded Tomcat를 통해 서버 프로세스를 생성하며 서버의 포트는 `8080` 입니다. 
 
 ## APIs
 
