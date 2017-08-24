@@ -24,6 +24,10 @@ $ ./gradlew bootRun
 $ ./gradlew test
 ```
 
+#### CI & Test coverage
+
+애플리케이션은 jacoco를 통해 테스트 결과에 대한 테스트 커버리지 리포트를 생산하고 `Travis CI`를 통해 master 브랜치에 커밋이 일어날 때마다 지속적으로 빌드 및 테스트를 하고 있습니다.
+
 ## APIs
 
 ```
