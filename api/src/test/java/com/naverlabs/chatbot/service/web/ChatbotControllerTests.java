@@ -3,8 +3,8 @@ package com.naverlabs.chatbot.service.web;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.naverlabs.chatbot.EndPoints;
 import com.naverlabs.chatbot.domain.Chatbot;
-import com.naverlabs.chatbot.service.ChatbotService;
-import com.naverlabs.chatbot.web.ChatbotController;
+import com.naverlabs.chatbot.v1.service.ChatbotService;
+import com.naverlabs.chatbot.v1.web.ChatbotController;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +17,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+
 import java.io.IOException;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -63,7 +64,10 @@ public class ChatbotControllerTests {
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].id", is(entity.getId().intValue())))
                 .andExpect(jsonPath("$[0].name", is(entity.getName())))
-                .andExpect(jsonPath("$[0].webhookUrl", is(entity.getWebhookUrl())));
+                .andExpect(jsonPath("$[0].messengerType", is(entity.getMessengerType().name())))
+                .andExpect(jsonPath("$[0].messengerToken", is(entity.getMessengerToken())))
+                .andExpect(jsonPath("$[0].webhookUrl", is(entity.getWebhookUrl())))
+                .andExpect(jsonPath("$[0].enabled", is(entity.isEnabled())));
     }
 
     @Test
@@ -82,7 +86,10 @@ public class ChatbotControllerTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(entity.getId().intValue())))
                 .andExpect(jsonPath("$.name", is(entity.getName())))
-                .andExpect(jsonPath("$.webhookUrl", is(entity.getWebhookUrl())));
+                .andExpect(jsonPath("$.messengerType", is(entity.getMessengerType().name())))
+                .andExpect(jsonPath("$.messengerToken", is(entity.getMessengerToken())))
+                .andExpect(jsonPath("$.webhookUrl", is(entity.getWebhookUrl())))
+                .andExpect(jsonPath("$.enabled", is(entity.isEnabled())));
     }
 
     @Test

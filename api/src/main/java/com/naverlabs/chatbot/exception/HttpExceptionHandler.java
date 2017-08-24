@@ -1,4 +1,4 @@
-package com.naverlabs.chatbot.web.exception;
+package com.naverlabs.chatbot.exception;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

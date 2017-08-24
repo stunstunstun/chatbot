@@ -70,14 +70,22 @@ enabled | Boolean | 챗봇의 서비스 활성여부
 #### Examples
 
 ```
-GET /chatbot/v1/bots HTTP/1.1
+GET /chatbot/v1/bots/1 HTTP/1.1
 Host: localhost:8080
 User-Agent: curl/7.54.0
 Accept: */*
  
 HTTP/1.1 200 
 Content-Type: application/json;charset=UTF-8
-...
+
+{
+    "id": 1,
+    "name": "Bitcoin Bot",
+    "messengerType": "FACEBOOK",
+    "messengerToken": "EAAR4t31aREoBACDzWk5luFqjfJZB4wIH4WdbS4p64KZBf7iPfex44TnXTRFws4LFAwilkkytW9K1v1ADOgZAB6hbtnPMVmAUfmRNGfmFBRFLz5ABzi8ZBPtonrAhFo7yxzDoIdNs1QwnXrvlDkgm8IXLTbjbsKfMUFW0Uq6yvgZDZD",
+    "webhookUrl": "http://localhost/webhook",
+    "enabled": true
+}
 ```
 
 ## Errors Representation
@@ -113,3 +121,24 @@ Http Status | Description
 405 | METHOD_NOT_ALLOWED
 415 | UNSUPPORTED_MEDIA_TYPE
 500 | INTERNAL_SERVER_ERROR
+
+#### Examples
+
+```
+POST /chatbot/v1/bots/1 HTTP/1.1
+Host: localhost:8080
+User-Agent: curl/7.54.0
+Accept: */*
+ 
+HTTP/1.1 405 
+Content-Type: application/json;charset=UTF-8
+
+{
+    "timestamp": 1503560424028,
+    "status": 405,
+    "error": "Method Not Allowed",
+    "exception": "org.springframework.web.HttpRequestMethodNotSupportedException",
+    "message": "Request method 'POST' not supported",
+    "path": "/chatbot/v1/bots/1"
+}
+```

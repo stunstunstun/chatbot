@@ -15,7 +15,10 @@ public class Chatbot {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    private MessengerType messengerType;
+
+    private String messengerToken;
+
     private String webhookUrl;
 
     @Column(nullable = false)
@@ -45,6 +48,22 @@ public class Chatbot {
         this.webhookUrl = webhookUrl;
     }
 
+    public MessengerType getMessengerType() {
+        return messengerType;
+    }
+
+    public void setMessengerType(MessengerType messengerType) {
+        this.messengerType = messengerType;
+    }
+
+    public String getMessengerToken() {
+        return messengerToken;
+    }
+
+    public void setMessengerToken(String messengerToken) {
+        this.messengerToken = messengerToken;
+    }
+
     public boolean isEnabled() {
         return enabled;
     }
@@ -55,6 +74,6 @@ public class Chatbot {
 
     @Override
     public String toString() {
-        return String.format("Chatbot[id=%s, name=%s, webhookUrl=%s, enabled=%b]", id, name, webhookUrl, enabled);
+        return String.format("Chatbot[id=%s, name=%s, messengerType=%s, enabled=%b]", id, name, messengerType, enabled);
     }
 }

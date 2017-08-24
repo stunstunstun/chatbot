@@ -1,8 +1,8 @@
-package com.naverlabs.chatbot.service;
+package com.naverlabs.chatbot.v1.service;
 
 import com.naverlabs.chatbot.domain.Chatbot;
 import com.naverlabs.chatbot.domain.ChatbotRepository;
-import com.naverlabs.chatbot.web.exception.ResourceNotFoundException;
+import com.naverlabs.chatbot.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Component;
 
 /**

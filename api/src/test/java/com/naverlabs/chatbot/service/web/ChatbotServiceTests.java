@@ -3,8 +3,9 @@ package com.naverlabs.chatbot.service.web;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.naverlabs.chatbot.domain.Chatbot;
 import com.naverlabs.chatbot.domain.ChatbotRepository;
-import com.naverlabs.chatbot.service.ChatbotService;
-import com.naverlabs.chatbot.web.exception.ResourceNotFoundException;
+import com.naverlabs.chatbot.domain.MessengerType;
+import com.naverlabs.chatbot.exception.ResourceNotFoundException;
+import com.naverlabs.chatbot.v1.service.ChatbotService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -52,6 +53,7 @@ public class ChatbotServiceTests {
         given(chatbotRepository.exists(entity.getId())).willReturn(true);
 
         entity.setEnabled(false);
+        entity.setMessengerType(MessengerType.LINE);
         given(chatbotRepository.save(entity)).willReturn(entity);
 
         Chatbot updated = chatbotService.update(entity);

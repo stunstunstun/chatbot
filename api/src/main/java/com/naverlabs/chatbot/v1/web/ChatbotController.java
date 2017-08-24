@@ -1,8 +1,8 @@
-package com.naverlabs.chatbot.web;
+package com.naverlabs.chatbot.v1.web;
 
 import com.naverlabs.chatbot.EndPoints;
 import com.naverlabs.chatbot.domain.Chatbot;
-import com.naverlabs.chatbot.service.ChatbotService;
+import com.naverlabs.chatbot.v1.service.ChatbotService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

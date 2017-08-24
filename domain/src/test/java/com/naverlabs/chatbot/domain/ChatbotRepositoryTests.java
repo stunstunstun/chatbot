@@ -5,6 +5,7 @@ import org.assertj.core.api.Assertions;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -43,7 +44,18 @@ public class ChatbotRepositoryTests extends AbstractDataJpaTest {
     public void save() {
         Chatbot entity = new Chatbot();
         entity.setName("Travel Bot");
-        entity.setWebhookUrl("http://localhost:8080/chatbot/bots/6/webhook");
+        entity.setMessengerType(MessengerType.LINE);
+        entity.setMessengerToken("EAAR4t31aREoBACDzWk5luFqjfJZB4wIH4WdbS4p64KZBf7iPfex44TnXTRFws4LFAwilkkytW9K1v1ADOgZAB6hbtnPMVmAUfmRNGfmFBRFLz5ABzi8ZBPtonrAhFo7yxzDoIdNs1QwnXrvlDkgm8IXLTbjbsKfMUFW0Uq6yvgZDZD");
+        entity.setWebhookUrl("http://localhost/webhook");
+        entity.setEnabled(false);
+
+        entity = chatbotRepository.save(entity);
+        assertThat(chatbotRepository.exists(entity.getId())).isTrue();
+    }
+
+    @Test(expected = DataIntegrityViolationException.class)
+    public void saveWithNullValue() {
+        Chatbot entity = new Chatbot();
         entity.setEnabled(false);
 
         entity = chatbotRepository.save(entity);

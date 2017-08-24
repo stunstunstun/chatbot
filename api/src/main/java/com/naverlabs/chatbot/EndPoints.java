@@ -5,6 +5,6 @@ package com.naverlabs.chatbot;
  */
 public class EndPoints {
 
-    public static final String BOTS = "/chatbot/bots";
+    public static final String BOTS = "/chatbot/v1/bots";
 
 }
