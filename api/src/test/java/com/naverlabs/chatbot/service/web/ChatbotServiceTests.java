@@ -58,6 +58,7 @@ public class ChatbotServiceTests {
 
     @Test
     public void findOne() {
+        given(chatbotRepository.exists(entity.getId())).willReturn(true);
         given(chatbotRepository.findOne(entity.getId())).willReturn(entity);
         assertThat(chatbotService.findOne(entity.getId())).isNotNull();
     }
