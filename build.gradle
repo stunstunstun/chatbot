@@ -1,6 +1,5 @@
 buildscript {
 	ext {
-		gradleVersion = '4.0'
 		springBootVersion = '1.5.3.RELEASE'
 		jacocoVersion = '0.7.9'
 	}
