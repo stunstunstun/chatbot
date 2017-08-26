@@ -149,3 +149,11 @@ Content-Type: application/json;charset=UTF-8
     "path": "/chatbot/v1/bots/1"
 }
 ```
+
+## Release History
+
+#### v0.1.0
+
+`2017/08/26`
+
+- Initial release version
