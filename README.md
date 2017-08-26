@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/stunstunstun/chatbot.svg?branch=master)](https://travis-ci.org/stunstunstun/chatbot)
+
 ## API Overview
 
 챗봇은 현재 다양한 메신저 플랫폼에서 활용되고 있습니다. 챗봇 API는 다양한 메신저 플랫폼에서 활용되는 챗봇에 대한 정보를 일관적으로 관리하기 위한 리소스를 제공하고 있습니다. 
