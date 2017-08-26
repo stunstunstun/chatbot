@@ -1,11 +1,13 @@
 package com.naverlabs.chatbot.service.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.naverlabs.chatbot.EndPoints;
 import com.naverlabs.chatbot.domain.Chatbot;
 import com.naverlabs.chatbot.domain.ChatbotRepository;
 import com.naverlabs.chatbot.domain.MessengerType;
 import com.naverlabs.chatbot.exception.ResourceNotFoundException;
 import com.naverlabs.chatbot.v1.service.ChatbotService;
+import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,6 +48,18 @@ public class ChatbotServiceTests {
         JacksonTester.initFields(this, objectMapper);
 
         entity = resource.readObject(new ClassPathResource("chatbot_resource.json"));
+    }
+
+    @Test
+    public void findAll() {
+        given(chatbotRepository.findAll()).willReturn(Lists.newArrayList(entity));
+        chatbotService.findAll().forEach(chatbot -> assertThat(chatbot.getName()).isNotNull());
+    }
+
+    @Test
+    public void findOne() {
+        given(chatbotRepository.findOne(entity.getId())).willReturn(entity);
+        assertThat(chatbotService.findOne(entity.getId())).isNotNull();
     }
 
     @Test
