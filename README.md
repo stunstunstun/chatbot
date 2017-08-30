@@ -152,6 +152,12 @@ Content-Type: application/json;charset=UTF-8
 
 ## Release History
 
+#### v0.1.1
+
+`2017/08/30`
+
+- [Add Validation to check resource for POST, PUT](https://github.com/stunstunstun/chatbot/issues/3)
+
 #### v0.1.0
 
 `2017/08/26`
