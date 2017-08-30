@@ -5,6 +5,7 @@ import com.naverlabs.chatbot.EndPoints;
 import com.naverlabs.chatbot.domain.Chatbot;
 import com.naverlabs.chatbot.v1.service.ChatbotService;
 import com.naverlabs.chatbot.v1.web.ChatbotController;
+import com.naverlabs.chatbot.v1.web.ChatbotResource;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +18,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 
@@ -40,9 +42,13 @@ public class ChatbotControllerTests {
     @Autowired
     private MockMvc mvc;
 
-    private JacksonTester<Chatbot> resource;
+    private JacksonTester<ChatbotResource> resourceTester;
+
+    private JacksonTester<Chatbot> entityTester;
 
     private Iterable<Chatbot> resources;
+
+    private ChatbotResource resource;
 
     private Chatbot entity;
 
@@ -51,7 +57,8 @@ public class ChatbotControllerTests {
         ObjectMapper objectMapper = new ObjectMapper();
         JacksonTester.initFields(this, objectMapper);
 
-        entity = resource.readObject(new ClassPathResource("chatbot_resource.json"));
+        resource = resourceTester.readObject(new ClassPathResource("chatbot_resource.json"));
+        entity = entityTester.readObject(new ClassPathResource("chatbot_entity.json"));
     }
 
     @Test
@@ -101,18 +108,18 @@ public class ChatbotControllerTests {
 
     @Test
     public void save() throws Exception {
-        given(chatbotService.save(entity)).willReturn(entity);
+        given(chatbotService.save(resource)).willReturn(entity);
 
         mvc.perform(post(EndPoints.BOTS)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(resource.write(entity).getJson()))
+                .content(resourceTester.write(resource).getJson()))
                 .andExpect(status().isCreated());
     }
 
     @Test
     public void saveAndUnsupportedMediaType() throws Exception {
-        given(chatbotService.save(entity)).willReturn(entity);
+        given(chatbotService.save(resource)).willReturn(entity);
 
         mvc.perform(post(EndPoints.BOTS)
                 .accept(MediaType.APPLICATION_JSON)
@@ -123,7 +130,7 @@ public class ChatbotControllerTests {
 
     @Test
     public void saveAndRequestBodyNotReadable() throws Exception {
-        given(chatbotService.save(entity)).willReturn(entity);
+        given(chatbotService.save(resource)).willReturn(entity);
 
         mvc.perform(post(EndPoints.BOTS)
                 .accept(MediaType.APPLICATION_JSON)
@@ -133,19 +140,31 @@ public class ChatbotControllerTests {
     }
 
     @Test
+    public void saveAndRequestBodyIsNotValid() throws Exception {
+        resource.setName("");
+        given(chatbotService.save(resource)).willReturn(entity);
+
+        mvc.perform(post(EndPoints.BOTS)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(resourceTester.write(resource).getJson()))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
     public void update() throws Exception {
-        given(chatbotService.update(entity)).willReturn(entity);
+        given(chatbotService.update(entity.getId(), resource)).willReturn(entity);
 
         mvc.perform(put(EndPoints.BOTS + "/{id}", entity.getId())
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(resource.write(entity).getJson()))
+                .content(resourceTester.write(resource).getJson()))
                 .andExpect(status().isCreated());
     }
 
     @Test
     public void updateAndUnsupportedMediaType() throws Exception {
-        given(chatbotService.update(entity)).willReturn(entity);
+        given(chatbotService.update(entity.getId(), resource)).willReturn(entity);
 
         mvc.perform(put(EndPoints.BOTS + "/{id}", entity.getId())
                 .accept(MediaType.APPLICATION_JSON))
@@ -154,12 +173,24 @@ public class ChatbotControllerTests {
 
     @Test
     public void updateAndRequestBodyNotReadable() throws Exception {
-        given(chatbotService.update(entity)).willReturn(entity);
+        given(chatbotService.update(entity.getId(), resource)).willReturn(entity);
 
         mvc.perform(put(EndPoints.BOTS + "/{id}", entity.getId())
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"\"}"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void updateAndRequestBodyIsNotValid() throws Exception {
+        resource.setName("");
+        given(chatbotService.update(entity.getId(), resource)).willReturn(entity);
+
+        mvc.perform(put(EndPoints.BOTS + "/{id}", entity.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(resourceTester.write(resource).getJson()))
                 .andExpect(status().isBadRequest());
     }
 

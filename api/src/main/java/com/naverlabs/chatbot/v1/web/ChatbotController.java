@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 /**
  * @author minhyeok
  */
@@ -31,14 +33,13 @@ public class ChatbotController {
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-    public ResponseEntity<Chatbot> save(@RequestBody Chatbot chatbot) {
-        return new ResponseEntity<Chatbot>(chatbotService.save(chatbot), HttpStatus.CREATED);
+    public ResponseEntity<Chatbot> save(@Valid @RequestBody ChatbotResource resource) {
+        return new ResponseEntity<Chatbot>(chatbotService.save(resource), HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
-    public ResponseEntity<Chatbot> update(@RequestBody Chatbot chatbot, @PathVariable Long id) {
-        chatbot.setId(id);
-        return new ResponseEntity<Chatbot>(chatbotService.update(chatbot), HttpStatus.CREATED);
+    public ResponseEntity<Chatbot> update(@PathVariable Long id, @Valid @RequestBody ChatbotResource resource) {
+        return new ResponseEntity<Chatbot>(chatbotService.update(id, resource), HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

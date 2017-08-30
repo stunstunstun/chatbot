@@ -1,12 +1,11 @@
 package com.naverlabs.chatbot.service.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.naverlabs.chatbot.EndPoints;
 import com.naverlabs.chatbot.domain.Chatbot;
 import com.naverlabs.chatbot.domain.ChatbotRepository;
-import com.naverlabs.chatbot.domain.MessengerType;
 import com.naverlabs.chatbot.exception.ResourceNotFoundException;
 import com.naverlabs.chatbot.v1.service.ChatbotService;
+import com.naverlabs.chatbot.v1.web.ChatbotResource;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +37,11 @@ public class ChatbotServiceTests {
     @Autowired
     private ChatbotService chatbotService;
 
-    private JacksonTester<Chatbot> resource;
+    private JacksonTester<ChatbotResource> resourceTester;
+
+    private JacksonTester<Chatbot> entityTester;
+
+    private ChatbotResource resource;
 
     private Chatbot entity;
 
@@ -47,7 +50,8 @@ public class ChatbotServiceTests {
         ObjectMapper objectMapper = new ObjectMapper();
         JacksonTester.initFields(this, objectMapper);
 
-        entity = resource.readObject(new ClassPathResource("chatbot_resource.json"));
+        resource = resourceTester.readObject(new ClassPathResource("chatbot_resource.json"));
+        entity = entityTester.readObject(new ClassPathResource("chatbot_entity.json"));
     }
 
     @Test
@@ -64,39 +68,41 @@ public class ChatbotServiceTests {
     }
 
     @Test
-    public void update() throws IOException {
-        given(chatbotRepository.exists(entity.getId())).willReturn(true);
+    public void save() {
+        given(chatbotRepository.save(resource.getEntity())).willReturn(entity);
+        chatbotService.save(resource);
+    }
 
-        entity.setEnabled(false);
-        entity.setMessengerType(MessengerType.LINE);
+    @Test
+    public void update() throws IOException {
+        Chatbot entity = resource.getEntity();
+        entity.setId(entity.getId());
+
+        given(chatbotRepository.exists(entity.getId())).willReturn(true);
         given(chatbotRepository.save(entity)).willReturn(entity);
 
-        Chatbot updated = chatbotService.update(entity);
-        assertThat(updated.isEnabled()).isFalse();
+        Chatbot updated = chatbotService.update(entity.getId(), resource);
+        assertThat(updated).isNotNull();
     }
 
     @Test(expected = ResourceNotFoundException.class)
     public void findOneAndResourceNotFoundException() throws IOException {
-        Chatbot chatbot = resource.readObject(new ClassPathResource("chatbot_resource.json"));
-        given(chatbotRepository.exists(chatbot.getId())).willReturn(false);
-
-        chatbotService.findOne(chatbot.getId());
+        given(chatbotRepository.exists(entity.getId())).willReturn(false);
+        chatbotService.findOne(entity.getId());
     }
 
     @Test(expected = ResourceNotFoundException.class)
     public void updateAndResourceNotFoundException() throws IOException {
-        Chatbot chatbot = resource.readObject(new ClassPathResource("chatbot_resource.json"));
-        given(chatbotRepository.exists(chatbot.getId())).willReturn(false);
+        given(chatbotRepository.exists(entity.getId())).willReturn(false);
 
-        Chatbot updated = chatbotService.update(chatbot);
+        Chatbot updated = chatbotService.update(entity.getId(), resource);
         assertThat(updated.isEnabled()).isFalse();
     }
 
     @Test(expected = ResourceNotFoundException.class)
     public void deleteAndResourceNotFoundException() throws IOException {
-        Chatbot chatbot = resource.readObject(new ClassPathResource("chatbot_resource.json"));
-        given(chatbotRepository.exists(chatbot.getId())).willReturn(false);
+        given(chatbotRepository.exists(entity.getId())).willReturn(false);
 
-        chatbotService.delete(chatbot.getId());
+        chatbotService.delete(entity.getId());
     }
 }

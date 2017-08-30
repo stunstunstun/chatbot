@@ -3,6 +3,7 @@ package com.naverlabs.chatbot.v1.service;
 import com.naverlabs.chatbot.domain.Chatbot;
 import com.naverlabs.chatbot.domain.ChatbotRepository;
 import com.naverlabs.chatbot.exception.ResourceNotFoundException;
+import com.naverlabs.chatbot.v1.web.ChatbotResource;
 import org.springframework.stereotype.Component;
 
 /**
@@ -27,14 +28,16 @@ public class ChatbotService {
         return chatbotRepository.findOne(id);
     }
 
-    public Chatbot save(Chatbot chatbot) {
-        return chatbotRepository.save(chatbot);
+    public Chatbot save(ChatbotResource resource) {
+        return chatbotRepository.save(resource.getEntity());
     }
 
-    public Chatbot update(Chatbot chatbot) {
-        if (!chatbotRepository.exists(chatbot.getId()))
+    public Chatbot update(Long id, ChatbotResource resource) {
+        if (!chatbotRepository.exists(id))
             throw new ResourceNotFoundException();
-        return chatbotRepository.save(chatbot);
+        Chatbot entity = resource.getEntity();
+        entity.setId(id);
+        return chatbotRepository.save(entity);
     }
 
     public void delete(Long id) {
